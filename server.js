@@ -18,6 +18,10 @@ app.use(cors({origin: '*'})); //USED FOR FCC TESTING PURPOSES ONLY!
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
 
+const connectDB     = require('./db/connection')
+const MONGO_URI = process.env.DB
+
+
 //Index page (static HTML)
 app.route('/')
   .get(function (req, res) {
@@ -38,8 +42,14 @@ app.use(function(req, res, next) {
 });
 
 //Start our server and tests!
-const listener = app.listen(process.env.PORT || 3000, function () {
+const listener = app.listen(process.env.PORT || 3000, async function () {
   console.log('Your app is listening on port ' + listener.address().port);
+  try{
+    await connectDB(MONGO_URI)
+    console.log('connected to mongo...')
+  }catch(e){
+    console.log(e)
+  }
   if(process.env.NODE_ENV==='test') {
     console.log('Running Tests...');
     setTimeout(function () {
