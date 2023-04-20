@@ -1,3 +1,5 @@
+const bookSchema = require('../models/book')
+
 
 // /api/books
 
@@ -8,11 +10,19 @@ const getAllBooks = (req, res) => {
   return res.send('getting all books in controller...')
 }
 
-const createABook = (req, res) => {
+const createABook = async (req, res) => {
   console.log('creating a book...')
   let title = req.body.title;
   //response will contain new book object including atleast _id and title
-  return res.send('creating a book')
+  if(!title || title == ''){
+    return res.send('missing required field title')
+  }
+  let book = new bookSchema({title})
+  let savedBook = await book.save()
+  if(!savedBook){
+    return res.send('failed to save book')
+  }
+  return res.json(savedBook)
 }
 
 const deleteAllBooks = (req, res) => {
