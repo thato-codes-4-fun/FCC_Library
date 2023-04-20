@@ -1,5 +1,7 @@
 const bookSchema = require('../models/book')
 
+// Connect to MongoDB
+
 
 // /api/books
 
@@ -32,8 +34,16 @@ const createABook = async (req, res) => {
 
 const deleteAllBooks = (req, res) => {
   //if successful response will be 'complete delete successful'
-  console.log('deleting a book....')
-  return res.send('deleting a book')
+  console.log('deleting all books...')
+ bookSchema.collection.drop(function(err) {
+  if (err) {
+    console.log('Error deleting collection: ' + err);
+    return res.send('error deleting')
+  } else {
+    console.log('Collection deleted');
+    return res.send('complete delete successful')
+  }
+});
 }
 
 // api/books/:id

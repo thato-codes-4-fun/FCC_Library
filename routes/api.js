@@ -12,7 +12,7 @@ module.exports = function (app) {
 let { 
   getAllBooks,
   createABook,
-  deleteAllBook,
+  deleteAllBooks,
   getBook,
   addComment,
   deleteABook
@@ -23,7 +23,7 @@ let {
     
     .post(createABook)
     
-    .delete(deleteABook);
+    .delete(deleteAllBooks);
 
   app.route('/api/books/:id')
     .get(getBook)
