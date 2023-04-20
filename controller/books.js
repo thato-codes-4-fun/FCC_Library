@@ -3,11 +3,16 @@ const bookSchema = require('../models/book')
 
 // /api/books
 
-const getAllBooks = (req, res) => {
+const getAllBooks = async(req, res) => {
 //response will be array of book objects
 //json res format: [{"_id": bookid, "title": book_title, "commentcount": num_of_comments },...]
   console.log('getting all books')
-  return res.send('getting all books in controller...')
+  try{
+    let book = await bookSchema.find()
+    return res.json(book)
+  }catch(e){}
+  console.log('error, ', e)
+  return res.json({error: e})
 }
 
 const createABook = async (req, res) => {
@@ -32,10 +37,22 @@ const deleteAllBooks = (req, res) => {
 }
 
 // api/books/:id
-const getBook = (req, res) => {
-  let bookid = req.params.id;
-  console.log('getting book b', bookid)
+const getBook = async (req, res) => {
+  let _id = req.params.id;
+  console.log('getting book: ', _id)
   //json res format: {"_id": bookid, "title": book_title, "comments":   [comment,comment,...]}
+  try{
+    let book = await bookSchema.findById(_id)
+    if(!book) {
+      return res.send('no book exists')
+    }
+    console.log('book found: ', book)
+    return res.send(book)
+  }catch(e){
+    console.log('some error occured')
+    return res.send('no book exists')
+  }
+  
 }
 
 const addComment = (req, res) => {
