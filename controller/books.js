@@ -75,11 +75,20 @@ const addComment = (req, res) => {
 }
 
 
-const deleteABook = (req, res) => {
-  let bookid = req.params.id;
+const deleteABook = async (req, res) => {
+  let _id = req.params.id;
   //if successful response will be 'delete successful'
-  console.log('deleting book ', bookid)
-  return res.send('deleting a book ')
+  console.log('deleting book ', _id)
+  try{
+    let deletedBook = await bookSchema.deleteOne({_id})
+    console.log('deleted: ', deletedBook)
+    if (deletedBook.deletedCount == 0){
+      return res.send('no book exists')
+    }
+    return res.send('delete successful')
+  }catch(e){
+    
+  }
 }
 
 
