@@ -41,12 +41,19 @@ app.use(function(req, res, next) {
     .send('Not Found');
 });
 
+let connected;
+
 //Start our server and tests!
 const listener = app.listen(process.env.PORT || 3000, async function () {
   console.log('Your app is listening on port ' + listener.address().port);
   try{
-    await connectDB(MONGO_URI)
-    console.log('connected to mongo...')
+    if(!connected){
+      connected = await connectDB(MONGO_URI)
+      console.log('connected to mongo...')
+    } else {
+      console.log('connection to db already established...')
+    }
+
   }catch(e){
     console.log(e)
   }

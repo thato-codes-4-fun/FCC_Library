@@ -87,10 +87,6 @@ const addComment = async (req, res) => {
     console.log('error: ', e)
     return res.send('no book exists')
   }
-
- 
-  return res.send('sending new comment')
-  //json res format same as .get
 }
 
 
