@@ -41,11 +41,34 @@ suite('Functional Tests', function() {
     suite('POST /api/books with title => create book object/expect book object', function() {
       
       test('Test POST /api/books with title', function(done) {
-        //done();
+        let data = {
+          title: 'Testing for post'
+        }
+        chai
+        .request(server)
+        .post('/api/books/')
+        .send(data)
+        .end(function(err, res){
+          assert.equal(res.status, 200)
+          assert.equal(res.body.title, data.title)
+          //assert.property(res.body[0], 'title')
+          done()
+        })
       });
       
       test('Test POST /api/books with no title given', function(done) {
-        //done();
+        let data = {
+          notitle: 'error no title'
+        }
+        chai
+        .request(server)
+        .post('/api/books')
+        .send(data)
+        .end(function(err,res){
+          assert.equal(res.status, 200)
+          assert.equal(res.text, 'missing required field title')
+          done()
+        })
       });
       
     });
@@ -54,7 +77,14 @@ suite('Functional Tests', function() {
     suite('GET /api/books => array of books', function(){
       
       test('Test GET /api/books',  function(done){
-        //done();
+        chai
+        .request(server)
+        .get('/api/books')
+        .end(function(err, res){
+          //assert.equal(res.status, 200)
+          assert(Array.isArray(res.body))
+          done()
+        })
       });      
       
     });
@@ -64,6 +94,9 @@ suite('Functional Tests', function() {
       
       test('Test GET /api/books/[id] with id not in db',  function(done){
         //done();
+        chai
+        .request(server)
+        .get('/api/books/')
       });
       
       test('Test GET /api/books/[id] with valid id in db',  function(done){
@@ -104,3 +137,10 @@ suite('Functional Tests', function() {
   });
 
 });
+
+
+after(function() {
+  chai.request(server)
+    .get('/')
+});
+
