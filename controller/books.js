@@ -65,11 +65,30 @@ const getBook = async (req, res) => {
   
 }
 
-const addComment = (req, res) => {
-  let bookid = req.params.id;
+const addComment = async (req, res) => {
+  let _id = req.params.id;
   let comment = req.body.comment;
-  console.log('adding comment')
-  console.log(`bookid: ${bookid} , comment: ${comment}`)
+  console.log('adding comment...')
+
+  if (!_id || _id === ''){
+    return res.send('missing required field id')
+  }
+  if (!comment|| comment === ''){
+    return res.send('missing required field comment')
+  }
+  try{
+    let book = await bookSchema.findById(_id)
+    book.comments.push(comment)
+    book.commentcount++
+    let newBook = await book.save()
+    console.log('book', newBook)
+    return res.json(newBook)
+  }catch(e){
+    console.log('error: ', e)
+    return res.send('no book exists')
+  }
+
+ 
   return res.send('sending new comment')
   //json res format same as .get
 }
