@@ -10,6 +10,7 @@ const chaiHttp = require('chai-http');
 const chai = require('chai');
 const assert = chai.assert;
 const server = require('../server');
+const bookSchema = require('../models/book')
 
 chai.use(chaiHttp);
 
@@ -157,7 +158,7 @@ suite('Functional Tests', function() {
         }
         chai
         .request(server)
-        .post('/api/books/invalidid')
+        .post('/api/books/6443c976d0d9f7ea835c37d7')
         .send(data)
         .end(function(err, res){
           assert.equal(res.status, 200)
@@ -172,10 +173,27 @@ suite('Functional Tests', function() {
 
       test('Test DELETE /api/books/[id] with valid id in db', function(done) {
         //done();
+        let newbook = new bookSchema({title: 'created to delete'})
+        let id = newbook._id
+        chai
+        .request(server)
+        .delete(`/api/books/${id}`)
+        .end(function(err, res){
+          assert.equal(res.status, 200)
+          done()
+        })
       });
 
       test('Test DELETE /api/books/[id] with  id not in db', function(done) {
         //done();
+        chai
+        .request(server)
+        .delete('/api/books/6443c976d0d9f7ea835c37d8')
+        .end(function(err, res){
+          assert.equal(res.status, 200)
+          assert.equal(res.text, 'no book exists')
+          done()
+        })
       });
 
     });
