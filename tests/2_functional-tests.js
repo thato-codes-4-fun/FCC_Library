@@ -124,14 +124,46 @@ suite('Functional Tests', function() {
 
       test('Test POST /api/books/[id] with comment', function(done) {
         //done();
+        let comment = {
+          comment: 'comment added...'
+        }
+        chai
+        .request(server)
+        .post('/api/books/6443c7e6475cee13abc2ca3c')
+        .send(comment)
+        .end(function(err, res){
+          assert.equal(res.status, 200)
+          assert.property(res.body, 'comments', 'should have comment')
+          done()
+        })
       });
 
       test('Test POST /api/books/[id] without comment field', function(done) {
         //done();
+        chai
+        .request(server)
+        .post('/api/books/6443c7e6475cee13abc2ca3c')
+        .end(function(err, res){
+          assert.equal(res.status, 200)
+          assert.equal(res.text, 'missing required field comment')
+          done()
+        })
       });
 
       test('Test POST /api/books/[id] with comment, id not in db', function(done) {
         //done();
+        let data = {
+          comment: 'comment to be added'
+        }
+        chai
+        .request(server)
+        .post('/api/books/invalidid')
+        .send(data)
+        .end(function(err, res){
+          assert.equal(res.status, 200)
+          assert.equal(res.text, 'no book exists')
+          done()
+        })
       });
 
     });
