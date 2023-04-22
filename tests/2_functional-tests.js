@@ -110,7 +110,7 @@ suite('Functional Tests', function() {
         //done();
         chai
         .request(server)
-        .get('/api/books/6443c7e6475cee13abc2ca3c')
+        .get('/api/books/6443dfaf55a13f061f36df88')
         .end(function(err, res){
           assert.equal(res.status, 200)
           assert.property(res.body, 'title', 'should contain a titlle')
@@ -130,7 +130,7 @@ suite('Functional Tests', function() {
         }
         chai
         .request(server)
-        .post('/api/books/6443c7e6475cee13abc2ca3c')
+        .post('/api/books/6443dfaf55a13f061f36df88')
         .send(comment)
         .end(function(err, res){
           assert.equal(res.status, 200)
@@ -143,7 +143,7 @@ suite('Functional Tests', function() {
         //done();
         chai
         .request(server)
-        .post('/api/books/6443c7e6475cee13abc2ca3c')
+        .post('/api/books/6443dfaf55a13f061f36df88')
         .end(function(err, res){
           assert.equal(res.status, 200)
           assert.equal(res.text, 'missing required field comment')
@@ -158,7 +158,7 @@ suite('Functional Tests', function() {
         }
         chai
         .request(server)
-        .post('/api/books/6443c976d0d9f7ea835c37d7')
+        .post('/api/books/6443c976d0d9f7ea835c37d8')
         .send(data)
         .end(function(err, res){
           assert.equal(res.status, 200)
@@ -188,7 +188,7 @@ suite('Functional Tests', function() {
         //done();
         chai
         .request(server)
-        .delete('/api/books/6443c976d0d9f7ea835c37d8')
+        .delete('/api/books/6443dfaf55a13f061f36df56')
         .end(function(err, res){
           assert.equal(res.status, 200)
           assert.equal(res.text, 'no book exists')
